@@ -27,7 +27,7 @@ texture = ExtResource( 2 )
 position = Vector2( 0, 4 )
 shape = SubResource( 1 )
 
-[node name="actionTimer" type="Timer" parent="." index="2"]
+[node name="ActionTimer" type="Timer" parent="." index="2"]
 
 process_mode = 1
 wait_time = 1.0
@@ -42,7 +42,17 @@ playback_speed = 1.0
 playback/active = false
 playback/repeat = false
 playback/speed = 1.0
+_sections_unfolded = [ "playback" ]
 
-[connection signal="timeout" from="actionTimer" to="." method="_on_actionTimer_timeout"]
+[node name="StaminaTimer" type="Timer" parent="." index="4"]
+
+process_mode = 1
+wait_time = 0.1
+one_shot = false
+autostart = true
+
+[connection signal="timeout" from="ActionTimer" to="." method="_on_ActionTimer_timeout"]
+
+[connection signal="timeout" from="StaminaTimer" to="." method="_on_StaminaTimer_timeout"]
 
 
