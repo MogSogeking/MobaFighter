@@ -1,14 +1,19 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Entities/Character.tscn" type="PackedScene" id=1]
 [ext_resource path="res://HUD.tscn" type="PackedScene" id=2]
+[ext_resource path="res://HUD.gd" type="Script" id=3]
 
 [node name="GameMap" type="Node2D" index="0"]
 
 [node name="Character" parent="." index="0" instance=ExtResource( 1 )]
 
-speed = 100
-
 [node name="HUD" parent="." index="1" instance=ExtResource( 2 )]
+
+script = ExtResource( 3 )
+
+[connection signal="lifeChanged" from="Character" to="HUD" method="_on_Character_lifeChanged"]
+
+[connection signal="staminaChanged" from="Character" to="HUD" method="_on_Character_staminaChanged"]
 
 

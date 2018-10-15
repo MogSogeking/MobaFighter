@@ -8,6 +8,7 @@ enum State {
 }
 
 export (int) var speed
+export (int) var maxStamina = 100
 
 signal staminaChanged
 signal lifeChanged
@@ -20,7 +21,7 @@ var framerate = 1.0/60.0
 var startup = 0
 var active = 0
 var recover = 0
-var stamina = 100
+var stamina = maxStamina
 
 func _ready():
 	# Called when the node is added to the scene for the first time.
@@ -40,7 +41,7 @@ func processControls():
 			
 	if Input.is_action_just_pressed("action1"):
 		if state != State.startHit && stamina > 10:
-			stamina -= 10
+			depleteStamina(10)
 			state = State.startHit
 			startup = 6
 			active = 4
@@ -49,12 +50,16 @@ func processControls():
 	
 	if Input.is_action_just_pressed("action2"):
 		if state != State.startHit && stamina > 20:
-			stamina -= 20
+			depleteStamina(20)
 			state = State.startHit
 			startup = 9
 			active = 6
 			recover = 12
 			attack()
+
+func depleteStamina(points):
+	emit_signal("staminaChanged", maxStamina, stamina, stamina - points)
+	stamina -= points
 
 func attack():
 	$HitTween.stop(self)
@@ -91,5 +96,5 @@ func _on_ActionTimer_timeout():
 
 
 func _on_StaminaTimer_timeout():
-	if stamina < 100:
-		stamina += 1
+	if stamina < maxStamina:
+		depleteStamina(-1)
